@@ -29,10 +29,18 @@ tasklist.wrap(someAsynchronousTask, (err, result) => {
     else console.log('The result of some asychronous task was', result)
 })
 ```
+By default the task is registered with the functions name, so it is possible to see which functions didn't complete within the timeout. If you want to use anonymous functions or to override the default name, you can set it as follows:
+
+```js
+tasklist.wrap('some task', someAsynchronousTask, (err, result) => {
+    if (err) console.error(err)
+    else console.log('The result of some asychronous task was', result)
+})
+```
 
 ### Instead of wrapping your task, you can also use the asynchronous api
 ```js
-tasklist.register('foo', (err, token) => {
+tasklist.register('some task', (err, token) => {
     if (err) return console.log('system is shutting down')
     someAsynchronousTask((err, result) => {
         taskList.clear(token, () => {
@@ -46,7 +54,7 @@ tasklist.register('foo', (err, token) => {
 
 ### Or the synchronous api
 ```js
-const token = tasklist.register('foo')
+const token = tasklist.register('some task')
 if (token) {
     someAsynchronousTask((err, result) => {
         taskList.clear(token)
