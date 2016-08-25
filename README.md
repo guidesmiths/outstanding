@@ -2,7 +2,7 @@
 [![Code Style](https://img.shields.io/badge/code%20style-imperative-brightgreen.svg)](https://github.com/guidesmiths/eslint-config-imperative)
 # outstanding
 
-## TL;DR
+### TL;DR
 ```js
 const outstanding = require('outstanding')({ timeout: '5s' })
 const signals = ['SIGINT', 'SIGTERM']
@@ -25,7 +25,7 @@ outstanding.wrap(someAsynchronousTask, (err, result) => {
 })
 ```
 
-### Usage
+### Why use outstanding?
 In the world of continuous deployment applications are being started and stopped more frequently than ever. Stopping a process is normally achived by sending a 'SIGINT' or 'SIGTERM' signal. Your node application can listen for this and perform a gracesful shutdown by stopping listeners and closing connections, ensuring that new http requests are rejected, but in-flight ones can complete. But what happens to asynchronous processes that are not part of a request/response workflow, e.g.
 
 ```js
