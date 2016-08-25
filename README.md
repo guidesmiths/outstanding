@@ -4,8 +4,7 @@
 In the world of continuous deployment applications are being started and stopped more frequently than ever. Stopping a process is normally achived by sending a 'SIGINT' or 'SIGTERM' signal. Your node application can listen for this and perform a gracesful shutdown by stopping listeners and closing connections, ensuring that new http requests are rejected, but in-flight ones can complete. But what happens to asynchronous processes that are not part of a request/response workflow, e.g.
 
 ```js
-app.post('/demo', (req, res, next) => {
-    res.send(202)
+setInterval(() => {
     fs.writeFile('file.txt', res.body, function(err) {
 
         // If SIGINT or SIGTERM is triggered now your application will shutdown
@@ -15,7 +14,7 @@ app.post('/demo', (req, res, next) => {
             console.log('done')
         })
     })
-})
+}, 5000)
 ```
 In truth there's nothing you can do to completely prevent this scenario. ```SIGKILL``` will kill your application instantly and cannot be listened for, but since most deployment mechanism try ```SIGTERM``` first and wait for a bit before invoking ```SIGKILL``` why not be a good citizen and wait until the asynchronous operations are complete?
 
