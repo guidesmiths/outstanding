@@ -2,7 +2,7 @@
 [![Code Style](https://img.shields.io/badge/code%20style-imperative-brightgreen.svg)](https://github.com/guidesmiths/eslint-config-imperative)
 # outstanding
 
-Outstanding assists with graceful shutdown of node.js applications by providing a way to track asynchronous tasks and block shutdown until they complete.
+Outstanding assists with graceful shutdown of node.js applications by providing a way to track asynchronous tasks and block shutdown until they complete or the optional timeout expires.
 
 ## Usage
 ```js
@@ -15,7 +15,6 @@ signals.forEach((signal) => {
         taskList.shutdown((err, outstandingTasks) => {
             if (err) {
                 // Tasks didn't complete before the timeout expired
-                // If you don't specify a timeout, the tasklist will wait until all tasks are complete
                 console.log(err.message, outstandingTasks)
                 process.exit(1)
             } else {
