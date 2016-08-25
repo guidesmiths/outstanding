@@ -14,6 +14,8 @@ signals.forEach((signal) => {
     process.on(signal, () => {
         taskList.shutdown((err, outstandingTasks) => {
             if (err) {
+                // Tasks didn't complete before the timeout expired
+                // If you don't specify a timeout, the tasklist will wait until all tasks are complete
                 console.log(err.message, outstandingTasks)
                 process.exit(1)
             } else {
