@@ -20,19 +20,13 @@ signals.forEach((signal) => {
 })
 
 // Meanwhile...
-const token = tasklist.register('foo')
-if (token) {
-    someAsynchronousTask((err, result) => {
-        taskList.clear(token)
-        if (err) console.error(err)
-        else console.log('The result of some asychronous task was', result)
-    })
-} else {
-    console.log('Cannot register task - the system is shutting down')
-}
+tasklist.wrap('foo', someAsynchronousTask, (err, result) => {
+    if (err) console.error(err)
+    else console.log('The result of some asychronous task was', result)
+})
 ```
 
-### You can also use the async api
+### Instead of wrapping your task, you can also use the asynchronous api
 ```js
 tasklist.register('foo', (err, token) => {
     if (err) return console.log('system is shutting down')
@@ -46,14 +40,18 @@ tasklist.register('foo', (err, token) => {
 })
 ```
 
-### Or the wrapped api
+### Or the synchronous api
 ```js
-tasklist.wrap('foo', someAsynchronousTask, (err, result) => {
-    if (err) console.error(err)
-    else console.log('The result of some asychronous task was', result)
-})
+const token = tasklist.register('foo')
+if (token) {
+    someAsynchronousTask((err, result) => {
+        taskList.clear(token)
+        if (err) console.error(err)
+        else console.log('The result of some asychronous task was', result)
+    })
+} else {
+    console.log('Cannot register task - the system is shutting down')
+}
 ```
-
-###
 
 
