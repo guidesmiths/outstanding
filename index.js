@@ -23,6 +23,7 @@ module.exports = function(config) {
     }
 
     function wrap(name, fn, cb) {
+        if (arguments.length === 2) return wrap(arguments[0].name || 'anonymous', arguments[0], arguments[1])
         register(name, function(err, token) {
             if (err) return cb(err)
             fn(function() {

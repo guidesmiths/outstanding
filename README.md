@@ -24,7 +24,7 @@ signals.forEach((signal) => {
 })
 
 // Meanwhile...
-tasklist.wrap('foo', someAsynchronousTask, (err, result) => {
+tasklist.wrap(someAsynchronousTask, (err, result) => {
     if (err) console.error(err)
     else console.log('The result of some asychronous task was', result)
 })
