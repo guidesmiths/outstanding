@@ -25,6 +25,7 @@ outstanding.wrap(someAsynchronousTask, (err, result) => {
 })
 ```
 
+### Usage
 In the world of continuous deployment applications are being started and stopped more frequently than ever. Stopping a process is normally achived by sending a 'SIGINT' or 'SIGTERM' signal. Your node application can listen for this and perform a gracesful shutdown by stopping listeners and closing connections, ensuring that new http requests are rejected, but in-flight ones can complete. But what happens to asynchronous processes that are not part of a request/response workflow, e.g.
 
 ```js
