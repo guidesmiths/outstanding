@@ -37,7 +37,6 @@ module.exports = function(config) {
         return clone(tasks)
     }
 
-
     function shutdown(cb) {
         done = cb
         if (options.timeout) scheduleTimeout()
