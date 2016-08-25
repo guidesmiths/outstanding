@@ -13,8 +13,12 @@ const signals = ['SIGINT', 'SIGTERM']
 signals.forEach((signal) => {
     process.on(signal, () => {
         taskList.shutdown((err, outstandingTasks) => {
-            if (err) console.log(outstandingTasks)
-            process.exit(0)
+            if (err) {
+                console.log(err.message, outstandingTasks)
+                process.exit(1)
+            } else {
+                process.exit(0)
+            }
         })
     })
 })
