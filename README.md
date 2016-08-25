@@ -42,7 +42,7 @@ app.post('/demo', (req, res, next) => {
     })
 })
 ```
-In truth there's nothing you can do to completely prevent this scenario. ```SIGKILL``` will kill your application instancly and cannot be listened for, but since most deployment mechanism try ```SIGTERM``` first and wait for a bit before invoking ```SIGKILL``` why not be a good citizen an wait until the asynchronous operations are complete?
+In truth there's nothing you can do to completely prevent this scenario. ```SIGKILL``` will kill your application instantly and cannot be listened for, but since most deployment mechanism try ```SIGTERM``` first and wait for a bit before invoking ```SIGKILL``` why not be a good citizen an wait until the asynchronous operations are complete?
 
 This is where ```outstanding``` comes in handy. Outstanding assists with graceful shutdown of node.js applications by providing a way to track asynchronous tasks and block shutdown until they complete or an optional timeout expires.
 
