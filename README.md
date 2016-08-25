@@ -17,7 +17,7 @@ app.post('/demo', (req, res, next) => {
     })
 })
 ```
-In truth there's nothing you can do to completely prevent this scenario. ```SIGKILL``` will kill your application instantly and cannot be listened for, but since most deployment mechanism try ```SIGTERM``` first and wait for a bit before invoking ```SIGKILL``` why not be a good citizen an wait until the asynchronous operations are complete?
+In truth there's nothing you can do to completely prevent this scenario. ```SIGKILL``` will kill your application instantly and cannot be listened for, but since most deployment mechanism try ```SIGTERM``` first and wait for a bit before invoking ```SIGKILL``` why not be a good citizen and wait until the asynchronous operations are complete?
 
 This is where ```outstanding``` comes in handy. Outstanding assists with graceful shutdown of node.js applications by providing a way to track asynchronous tasks and block shutdown until they complete or an optional timeout expires.
 ### TL;DR
@@ -45,7 +45,7 @@ outstanding.wrap(someAsynchronousTask, (err, result) => {
 ## Advanced Usage
 
 ### Labeling tasks
-When you wrap an asynchronous task, ```outstanding``` keeps track of the function name so you can review any log tasks on shutdown. If you use anonymous functions or prefer a custom label you can add an extra argument to ```wrap```, e.g.
+When you wrap an asynchronous task, ```outstanding``` keeps track of the function name so you can at least log incomplete tasks on shutdown. If you use anonymous functions or prefer a custom label you can add an extra argument to ```wrap```, e.g.
 
 ```js
 outstanding.wrap('my label', someAsynchronousTask, (err, result) => {
