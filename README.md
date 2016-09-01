@@ -62,7 +62,7 @@ outstanding.run('my label', someAsynchronousTask, (err, result) => {
 ```
 
 ### Low Level API
-The simplest way to use ```outstanding``` is to run tasks, but you can also use the api synchronously and asynchronously. In this case you need to explicitly use a label.
+The simplest way to use ```outstanding``` is to run or wrap tasks, but you can also use the api synchronously and asynchronously. In this case you need to explicitly use a label.
 
 #### Asynchronous Usage
 ```js
