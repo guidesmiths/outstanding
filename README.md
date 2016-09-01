@@ -36,25 +36,32 @@ signals.forEach((signal) => {
     })
 })
 
-outstanding.wrap(someAsynchronousTask, (err, result) => {
+outstanding.run(someAsynchronousTask, (err, result) => {
     if (err) console.error(err)
     else console.log('The result of some asychronous task was', result)
 })
 ```
 ## Advanced Usage
 
+### Wrapping tasks
+Sometimes you want to pass a function runped with outstanding to an executor.
+```js
+var wrapped = outstanding.wrap(someAsynchronousTask)
+async.times(3, wrapped)
+```
+
 ### Labeling tasks
-When you wrap an asynchronous task, ```outstanding``` keeps track of the function name so you can at least log incomplete tasks on shutdown. If you use anonymous functions or prefer a custom label you can add an extra argument to ```wrap```, e.g.
+When you ```run``` or ```wrap``` an asynchronous task, ```outstanding``` keeps track of the function name so you can at least log incomplete tasks on shutdown. If you use anonymous functions or prefer a custom label you can add an extra argument to both these functions, e.g.
 
 ```js
-outstanding.wrap('my label', someAsynchronousTask, (err, result) => {
+outstanding.run('my label', someAsynchronousTask, (err, result) => {
     if (err) console.error(err)
     else console.log('The result of some asychronous task was', result)
 })
 ```
 
-### Alternative APIs
-The simplest way to use ```outstanding``` is to wrap tasks, but you can also use the api synchronously and asynchronously. In this case you need to explicitly use a label.
+### Low Level API
+The simplest way to use ```outstanding``` is to run tasks, but you can also use the api synchronously and asynchronously. In this case you need to explicitly use a label.
 
 #### Asynchronous Usage
 ```js

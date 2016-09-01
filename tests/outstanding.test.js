@@ -123,9 +123,29 @@ describe('Outstanding', function() {
         })
     })
 
-    it('should wrap functions', function(done) {
+    it('should wrap task', function(done) {
         var o = outstanding()
-        o.wrap('foo', function(cb) {
+        var wrapped = o.wrap('foo', function(cb) {
+            var tasks = o.list()
+            var tokens = Object.keys(tasks)
+            assert.equal(tokens.length, 1)
+            assert.equal(tasks[tokens[0]].name, 'foo')
+            cb(null, 1, 2, 3)
+        })
+
+        wrapped(function(err, one, two, three) {
+            assert.ifError(err)
+            assert.equal(one, 1)
+            assert.equal(two, 2)
+            assert.equal(three, 3)
+            assert.equal(Object.keys(o.list()).length, 0)
+            done()
+        })
+    })
+
+    it('should run task', function(done) {
+        var o = outstanding()
+        o.run('foo', function(cb) {
             var tasks = o.list()
             var tokens = Object.keys(tasks)
             assert.equal(tokens.length, 1)
@@ -141,9 +161,9 @@ describe('Outstanding', function() {
         })
     })
 
-    it('should wrap functions using function name is not overriden', function(done) {
+    it('should run using function name is not overriden', function(done) {
         var o = outstanding()
-        o.wrap(function foo(cb) {
+        o.run(function foo(cb) {
             var tasks = o.list()
             var tokens = Object.keys(tasks)
             assert.equal(tokens.length, 1)

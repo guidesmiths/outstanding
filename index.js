@@ -22,8 +22,15 @@ module.exports = function(config) {
         if (cb) return cb()
     }
 
-    function wrap(name, fn, cb) {
-        if (arguments.length === 2) return wrap(arguments[0].name || 'anonymous', arguments[0], arguments[1])
+    function wrap(name, fn) {
+        if (arguments.length === 1) return wrap(arguments[0].name || 'anonymous', arguments[0], arguments[1])
+        return function(cb) {
+            run(name, fn, cb)
+        }
+    }
+
+    function run(name, fn, cb) {
+        if (arguments.length === 2) return run(arguments[0].name || 'anonymous', arguments[0], arguments[1])
         register(name, function(err, token) {
             if (err) return cb(err)
             fn(function() {
@@ -69,6 +76,7 @@ module.exports = function(config) {
         register: register,
         clear: clear,
         wrap: wrap,
+        run: run,
         list: list,
         shutdown: shutdown
     }

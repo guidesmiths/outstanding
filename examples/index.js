@@ -16,7 +16,7 @@ signals.forEach((signal) => {
 })
 
 function task() {
-    outstanding.wrap('example', function(cb) {
+    outstanding.run('example', function(cb) {
         fs.writeFile('file.txt', 'hello', function(err) {
             fs.unlink('file.txt', cb)
         })
