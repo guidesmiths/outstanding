@@ -21,7 +21,8 @@ In truth there's nothing you can do to completely prevent this scenario. ```SIGK
 This is where ```outstanding``` comes in handy. Outstanding assists with graceful shutdown of node.js applications by providing a way to track asynchronous tasks and block shutdown until they complete or an optional timeout expires.
 ### TL;DR
 ```js
-const outstanding = require('outstanding')({ timeout: '5s' })
+const Outstanding = require('outstanding')
+const outstanding = new Outstanding({ timeout: '5s' })
 const signals = ['SIGINT', 'SIGTERM']
 signals.forEach((signal) => {
     process.on(signal, () => {

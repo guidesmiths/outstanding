@@ -1,7 +1,9 @@
 var fs = require('fs')
-var outstanding = require('..')()
+var Outstanding = require('..')
 
 const signals = ['SIGINT', 'SIGTERM']
+const oustanding = new Outstanding()
+
 signals.forEach((signal) => {
     process.on(signal, () => {
         outstanding.shutdown((err, incomplete) => {

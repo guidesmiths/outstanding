@@ -2,49 +2,50 @@ var uuid = require('node-uuid').v4
 var parseDuration = require('parse-duration')
 var clone = require('lodash.clone')
 
-module.exports = function(config) {
+module.exports = function Outstanding(config) {
 
     var options = config || {}
     var tasks = {}
     var done
     var timeout
+    var self = this
 
-    function register(name, cb) {
+    this.register = function(name, cb) {
         if (shuttingDown()) return cb ? cb(new Error('Shutting down'), null) : null
         var token = uuid()
         tasks[token] = { name: name, registered: Date.now() }
         return cb ? cb(null, token) : token
     }
 
-    function clear(token, cb) {
+    this.clear = function(token, cb) {
         delete tasks[token]
         if (shuttingDown()) setImmediate(checkShutdown)
         if (cb) return cb()
     }
 
-    function wrap(name, fn) {
-        if (arguments.length === 1) return wrap(arguments[0].name || 'anonymous', arguments[0], arguments[1])
+    this.wrap = function(name, fn) {
+        if (arguments.length === 1) return self.wrap(arguments[0].name || 'anonymous', arguments[0], arguments[1])
         return function(cb) {
-            run(name, fn, cb)
+            self.run(name, fn, cb)
         }
     }
 
-    function run(name, fn, cb) {
-        if (arguments.length === 2) return run(arguments[0].name || 'anonymous', arguments[0], arguments[1])
-        register(name, function(err, token) {
+    this.run = function(name, fn, cb) {
+        if (arguments.length === 2) return self.run(arguments[0].name || 'anonymous', arguments[0], arguments[1])
+        self.register(name, function(err, token) {
             if (err) return cb(err)
             fn(function() {
-                clear(token)
+                self.clear(token)
                 cb.apply(null, Array.prototype.slice.call(arguments))
             })
         })
     }
 
-    function list() {
+    this.list = function() {
         return clone(tasks)
     }
 
-    function shutdown(cb) {
+    this.shutdown = function(cb) {
         done = cb
         if (options.timeout) scheduleTimeout()
         checkShutdown()
@@ -52,7 +53,7 @@ module.exports = function(config) {
 
     function scheduleTimeout() {
         timeout = setTimeout(function() {
-            done(new Error('Outstanding tasks did not complete within ' + options.timeout), list())
+            done(new Error('Outstanding tasks did not complete within ' + options.timeout), self.list())
         }, parseDuration(options.timeout))
         timeout.unref()
     }
@@ -71,14 +72,4 @@ module.exports = function(config) {
     function idle() {
         return Object.keys(tasks).length === 0
     }
-
-    return {
-        register: register,
-        clear: clear,
-        wrap: wrap,
-        run: run,
-        list: list,
-        shutdown: shutdown
-    }
-
 }
