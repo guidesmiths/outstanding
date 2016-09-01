@@ -64,8 +64,8 @@ outstanding.run('my label', someAsynchronousTask, (err, result) => {
 Just call ```outstanding.list()```. This will return a map of tokens to task details, e.g.
 ```json
 { 
-  '74a16a3b-129a-4921-bb71-897f2b6e64b7': { name: 'foo', registered: 1472713271233 },
-  '9e351837-421d-4785-bf7a-93f0aeed51b1': { name: 'bar', registered: 1472713349045 }
+  "74a16a3b-129a-4921-bb71-897f2b6e64b7": { "name": "foo", "registered": 1472713271233 },
+  "9e351837-421d-4785-bf7a-93f0aeed51b1": { "name": "bar", "registered": 1472713349045 }
 }
 ```
 ### Checking whether outstanding has been shutdown
