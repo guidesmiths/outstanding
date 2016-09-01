@@ -60,6 +60,16 @@ outstanding.run('my label', someAsynchronousTask, (err, result) => {
     else console.log('The result of some asychronous task was', result)
 })
 ```
+### Getting current tasks
+Just call ```outstanding.list()```. This will return a map of tokens to task details, e.g.
+```json
+{ 
+  '74a16a3b-129a-4921-bb71-897f2b6e64b7': { name: 'foo', registered: 1472713271233 },
+  '9e351837-421d-4785-bf7a-93f0aeed51b1': { name: 'bar', registered: 1472713349045 }
+}
+```
+### Checking whether outstanding has been shutdown
+Use ```outstanding.isClosed()```. Returns false until ```outstanding.shutdown(cb)``` has been invoked, after which it returns true
 
 ### Low Level API
 The simplest way to use ```outstanding``` is to run or wrap tasks, but you can also use the api synchronously and asynchronously. In this case you need to explicitly use a label.
