@@ -64,7 +64,7 @@ describe('Outstanding', function() {
         outstanding.shutdown(function() {})
         outstanding.register('foo', function(err, token) {
             assert.ok(err)
-            assert.equal(err.message, 'Shutting down')
+            assert.equal(err.message, 'Unable to register foo - registration has closed')
             assert.equal(token, null)
             done()
         })
@@ -121,6 +121,20 @@ describe('Outstanding', function() {
             assert.equal(tasks[token].name, 'foo')
             done()
         })
+    })
+
+    it('should report when shutting down', function(done) {
+        var outstanding = new Outstanding()
+        var token = outstanding.register('foo')
+        assert(!outstanding.isClosed())
+
+        outstanding.shutdown(function() {
+            assert(outstanding.isClosed())
+            done()
+        })
+
+        assert(outstanding.isClosed())
+        outstanding.clear(token)
     })
 
     it('should wrap task', function(done) {

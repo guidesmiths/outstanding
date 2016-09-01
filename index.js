@@ -1,17 +1,19 @@
 var uuid = require('node-uuid').v4
 var parseDuration = require('parse-duration')
 var clone = require('lodash.clone')
+var format = require('util').format
 
 module.exports = function Outstanding(config) {
 
     var options = config || {}
     var tasks = {}
     var done
+    var closed = false
     var timeout
     var self = this
 
     this.register = function(name, cb) {
-        if (shuttingDown()) return cb ? cb(new Error('Shutting down'), null) : null
+        if (self.isClosed()) return cb ? cb(new Error(format('Unable to register %s - registration has closed', name)), null) : null
         var token = uuid()
         tasks[token] = { name: name, registered: Date.now() }
         return cb ? cb(null, token) : token
@@ -19,7 +21,7 @@ module.exports = function Outstanding(config) {
 
     this.clear = function(token, cb) {
         delete tasks[token]
-        if (shuttingDown()) setImmediate(checkShutdown)
+        if (self.isClosed()) setImmediate(checkShutdown)
         if (cb) return cb()
     }
 
@@ -46,9 +48,14 @@ module.exports = function Outstanding(config) {
     }
 
     this.shutdown = function(cb) {
+        closed = true
         done = cb
         if (options.timeout) scheduleTimeout()
         checkShutdown()
+    }
+
+    this.isClosed = function() {
+        return closed
     }
 
     function scheduleTimeout() {
@@ -63,10 +70,6 @@ module.exports = function Outstanding(config) {
             clearTimeout(timeout)
             done()
         }
-    }
-
-    function shuttingDown() {
-        return !!done
     }
 
     function idle() {
