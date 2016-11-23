@@ -1,4 +1,4 @@
-var uuid = require('node-uuid').v4
+var uuid = require('uuid').v4
 var parseDuration = require('parse-duration')
 var clone = require('lodash.clone')
 var format = require('util').format
