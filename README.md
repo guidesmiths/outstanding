@@ -1,6 +1,13 @@
+# Outstanding
+A task register for facilitating graceful shutdown.
+
+[![NPM version](https://img.shields.io/npm/v/outstanding.svg?style=flat-square)](https://www.npmjs.com/package/outstanding)
+[![NPM downloads](https://img.shields.io/npm/dm/outstanding.svg?style=flat-square)](https://www.npmjs.com/package/outstanding)
 [![Build Status](https://img.shields.io/travis/guidesmiths/outstanding/master.svg)](https://travis-ci.org/guidesmiths/outstanding)
 [![Code Style](https://img.shields.io/badge/code%20style-imperative-brightgreen.svg)](https://github.com/guidesmiths/eslint-config-imperative)
-# outstanding
+[![Dependency Status](https://david-dm.org/guidesmiths/outstanding.svg)](https://david-dm.org/guidesmiths/outstanding)
+[![devDependencies Status](https://david-dm.org/guidesmiths/outstanding/dev-status.svg)](https://david-dm.org/guidesmiths/outstanding?type=dev)
+
 In the world of continuous deployment applications are being started and stopped more frequently than ever. Stopping a process is normally achived by sending a 'SIGINT' or 'SIGTERM' signal. Your node application can listen for this and perform a gracesful shutdown by stopping listeners and closing connections, ensuring that new http requests are rejected, but in-flight ones can complete. But what happens to asynchronous processes that are not part of a request/response workflow, e.g.
 
 ```js
@@ -45,7 +52,7 @@ outstanding.run(someAsynchronousTask, (err, result) => {
 ## Advanced Usage
 
 ### Wrapping tasks
-Sometimes you want to pass a function runped with outstanding to an executor.
+Sometimes you want to pass a function wrapped with outstanding to an executor.
 ```js
 var wrapped = outstanding.wrap(someAsynchronousTask)
 async.times(3, wrapped)
@@ -63,7 +70,7 @@ outstanding.run('my label', someAsynchronousTask, (err, result) => {
 ### Getting current tasks
 Just call ```outstanding.list()```. This will return a map of tokens to task details, e.g.
 ```json
-{ 
+{
   "74a16a3b-129a-4921-bb71-897f2b6e64b7": { "name": "foo", "registered": 1472713271233 },
   "9e351837-421d-4785-bf7a-93f0aeed51b1": { "name": "bar", "registered": 1472713349045 }
 }

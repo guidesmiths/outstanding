@@ -2,7 +2,7 @@ var fs = require('fs')
 var Outstanding = require('..')
 
 const signals = ['SIGINT', 'SIGTERM']
-const oustanding = new Outstanding()
+const outstanding = new Outstanding()
 
 signals.forEach((signal) => {
     process.on(signal, () => {
@@ -20,6 +20,7 @@ signals.forEach((signal) => {
 function task() {
     outstanding.run('example', function(cb) {
         fs.writeFile('file.txt', 'hello', function(err) {
+            if (err) throw err
             fs.unlink('file.txt', cb)
         })
     }, function(err, x) {
