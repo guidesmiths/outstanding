@@ -1,11 +1,15 @@
 # Change Log
 
-## [1.0.1
+## [1.2.0]
 ### Updated
-- Dependencies
+- Updated dependencies
+
+## [1.0.1]
+### Updated
+- Updated dependencies
 
 ## [1.0.0]
-### Updated 
+### Updated
 - Improved readme
 - Updated eslint
 - This changelog
